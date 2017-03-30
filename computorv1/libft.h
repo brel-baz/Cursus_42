@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brel-baz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: brel-baz <brel-baz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 11:23:03 by brel-baz          #+#    #+#             */
-/*   Updated: 2016/12/05 17:19:25 by brel-baz         ###   ########.fr       */
+/*   Updated: 2017/03/01 16:43:49 by brel-baz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 # include <unistd.h>
 # include <string.h>
 # include <stdlib.h>
+
+# define BUFF_SIZE 42
+
+int					get_next_line(const int fd, char **line);
+
+typedef struct		s_line
+{
+	int				fd;
+	char			*tmp;
+	struct s_line	*next;
+}					t_line;
 
 typedef struct		s_list
 {

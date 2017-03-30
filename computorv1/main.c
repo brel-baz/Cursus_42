@@ -12,7 +12,6 @@
 
 #include "libft.h"
 #include <stdio.h>
-#include <math.h>
 
 char	*split_space(char *str)
 {
@@ -171,11 +170,9 @@ double sqrt_double(double d)
 int		main(int argc, char **argv)
 {
 
-	char *str;
 	char **tab;
 	char **left;
 	char **right;
-	char degree;
 	int i;
 	double a;
 	double b;
@@ -187,6 +184,7 @@ int		main(int argc, char **argv)
 	double delta;
 
 	i = 0;
+	a = 0;
 	b = 0;
 	c = 0;
 	d = 0;
@@ -194,7 +192,6 @@ int		main(int argc, char **argv)
 	{
 		if (get_degree(argv[1]) > '2')
 		{
-			//printf("Reduced form : (%.1f * X^0) + (%.1f * X^1) + (%.1f * X^2) + ( * X^3) = 0\n", c, b, a);
 			printf("Polynomial degree: %c\n", get_degree(argv[1]));
 			printf("The polynomial degree is stricly greater than 2, I can't solve.\n");
 			return (0);
@@ -253,46 +250,50 @@ int		main(int argc, char **argv)
 				i++;
 			}			
 		}
-	}
-	printf("a = %f\n", a);
-	if (get_degree(argv[1]) == '0')
-	{
-		printf("Polynomial degree : 0\n");
-		printf("All real numbers are solution\n");
-		return (0);
-	}
-	if (get_degree(argv[1]) == '1' || a == 0)
-	{
-		printf("Reduced form : (%.1f * X^0) + (%.1f * X^1) = 0\n", c, b);
-		printf("x = %f\n", (c * -1) / b);
-		return (0);
-	}
-	if (get_degree(argv[1]) == '2')
-	{
-		printf("Reduced form : (%.1f * X^0) + (%.1f * X^1) + (%.1f * X^2) = 0\n", c, b, a);
-		printf("Polynomial degree: 2\n");
-		delta = (b * b) - (4 * a * c);
-		if (delta > 0)
+	
+		if (get_degree(argv[1]) == '0')
 		{
-			x1 = (-b - sqrt_double(delta)) / (2 * a);
-			x2 = (-b + sqrt_double(delta)) / (2 * a);
-			printf("Discriminant is strictly positive (%.2f), the two solutions are:\n", delta);
-			printf("x1 = %f\n", x1);
-			printf("x2 = %f\n", x2);
+			printf("Polynomial degree : 0\n");
+			printf("All real numbers are solution\n");
+			return (0);
 		}
-		else if (delta == 0)
+		if (get_degree(argv[1]) == '1' || a == 0)
 		{
-			x = -b / 2 * a;
-			printf("Discriminant is equal 0 , the only solution is:\n");
-			printf("x = %f", x);
+			printf("Reduced form : (%.1f * X^0) + (%.1f * X^1) = 0\n", c, b);
+			printf("-%.2f / %.2f\n", c, b);
+			printf("x = %f\n", (c * -1) / b);
+			return (0);
 		}
-		else if (delta < 0)
+		if (get_degree(argv[1]) == '2')
 		{
-			printf("Discriminant is strictly negative (%.2f), the two complex solutions are:\n", delta);
-			printf("x1 = %f - %f * i\n", -b / (2 * a), sqrt_double(-delta) / (2 * a));
-			printf("x1 = %f + %f * i\n", -b / (2 * a), sqrt_double(-delta) / (2 * a));
+			printf("Reduced form : (%.1f * X^0) + (%.1f * X^1) + (%.1f * X^2) = 0\n", c, b, a);
+			printf("Polynomial degree: 2\n");
+			delta = (b * b) - (4 * a * c);
+			if (delta > 0)
+			{
+				printf("(-%.2f -\u221a%.2f) / (2 * %.2f)\n", b, delta, a);
+				printf("(-%.2f +\u221a%.2f) / (2 * %.2f)\n", b, delta, a);
+				x1 = (-b - sqrt_double(delta)) / (2 * a);
+				x2 = (-b + sqrt_double(delta)) / (2 * a);
+				printf("Discriminant is strictly positive (%.2f), the two solutions are:\n", delta);
+				printf("x1 = %f\n", x1);
+				printf("x2 = %f\n", x2);
+			}
+			else if (delta == 0)
+			{
+				x = -b / 2 * a;
+				printf("Discriminant is equal 0 , the only solution is:\n");
+				printf("-%.2f / 2 * %.2f\n", b, a);
+				printf("x = %f", x);
+			}
+			else if (delta < 0)
+			{
+				printf("Discriminant is strictly negative (%.2f), the two complex solutions are:\n", delta);
+				printf("x1 = %f - %f * i\n", -b / (2 * a), sqrt_double(-delta) / (2 * a));
+				printf("x1 = %f + %f * i\n", -b / (2 * a), sqrt_double(-delta) / (2 * a));
+			}
+			return (0);
 		}
-		return (0);
 	}
 	return (0);
 }
