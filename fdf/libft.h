@@ -6,7 +6,7 @@
 /*   By: brel-baz <brel-baz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/12 11:23:03 by brel-baz          #+#    #+#             */
-/*   Updated: 2017/04/05 00:54:24 by brel-baz         ###   ########.fr       */
+/*   Updated: 2017/04/07 04:27:32 by brel-baz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
-# define BUFF_SIZE 42
+# define BUFF_SIZE 9999
 
 int					get_next_line(const int fd, char **line);
 

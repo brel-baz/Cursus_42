@@ -6,14 +6,14 @@
 /*   By: brel-baz <brel-baz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 02:05:31 by brel-baz          #+#    #+#             */
-/*   Updated: 2017/04/07 01:41:00 by brel-baz         ###   ########.fr       */
+/*   Updated: 2017/04/16 04:46:12 by brel-baz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "fdf.h"
 #include "mlx.h"
-#define ZOOM 20
+#include "fdf.h"
+#define ZOOM 27
 
 int		check_line(char *str)
 {
@@ -31,27 +31,27 @@ int		check_line(char *str)
 
 int		get_length(char *file)
 {
-	int		x;
+	int		y;
 	int		fd;
 	char	*line;
 
-	x = 0;
+	y = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		exit(1);
 	while (get_next_line(fd, &line))
 	{
-		if (check_line(line) == 0)
-			return (0);
-		x++;
+		if (check_line(line) == -1)
+			return (-1);
+		y++;
 		free(line);
 	}
-	return (x);
+	close(fd);
+	return (y);
 }
 
-int		get_width(char *file, int flag, int check)
+int		get_width(char *file, int flag, int check, int x)
 {
-	int		y;
 	int		fd;
 	char	*line;
 	char	**tab;
@@ -61,26 +61,27 @@ int		get_width(char *file, int flag, int check)
 		exit(1);
 	while (get_next_line(fd, &line))
 	{
-		y = 0;
+		x = 0;
 		tab = ft_strsplit(line, ' ');
-		while (tab[y])
-			y++;
+		while (tab[x])
+			x++;
 		if (flag == 0)
 		{
-			check = y;
+			check = x;
 			flag = 1;
 		}
 		free(line);
 		free(tab);
-		if (y != check)
+		if (x != check)
 			return (-1);
 	}
-	return (y);
+	close(fd);
+	return (x);
 }
 
 int		**create_tab(int x, int y, char *file, int i)
 {
-	int		**point;
+	int	**point;
 	char	**tab;
 	char	*line;
 	int		j;
@@ -103,38 +104,58 @@ int		**create_tab(int x, int y, char *file, int i)
 		free(tab);
 		i++;
 	}
+	close(fd);
 	return (point);
 }
+
+void	line(t_point p0, t_point p1, t_draw draw);
+
 int		main(int ac, char **av)
 {
 	int	**tab;
-	int	x;
-	int	y;
-	int	flag;
-	int	check;
-	void *mlx;
-	void *win;
+	int length = get_length(av[1]);
+	int width = get_width(av[1], 0, 0, 0);
+	t_draw draw;
+	t_point p0;
+	t_point p1;
 
-	flag = 0;
-	check = 0;
-	ft_putnbr(get_length(av[1]));
-	ft_putchar('\n');
-	ft_putnbr(get_width(av[1], 0, 0));
-	ft_putchar('\n');
-	tab = create_tab(get_length(av[1]), get_width(av[1], flag, check), av[1], 0);
-	x = 0;
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 1300, 1300, "42");
-	while (x < get_length(av[1]))
+	// ft_putnbr(get_length(av[1]));
+	// ft_putchar('\n');
+	// ft_putnbr(get_width(av[1], 0, 0, 0));
+	// ft_putchar('\n');
+	if (ac == 2)
 	{
-		y = 0;
-		while (y < get_width(av[1], flag, check))
+		if (!av[1])
+			return (0);
+		if (get_length(av[1]) == -1 || get_width(av[1], 0, 0, 0) == -1)
 		{
-			mlx_pixel_put(mlx, win, y * ZOOM, x * ZOOM, 0x00FFFFFF);
-			y++;
+			ft_putstr("Wrong map\n");
+			exit (1);
 		}
-		x++;
+		tab = create_tab(length, width, av[1], 0);
+		p0.x = 0;
+		p0.y = 0;
+		draw.mlx = mlx_init();
+		draw.win = mlx_new_window(draw.mlx, 1300, 1300, "42");
+		while (p0.y < length - 1)
+		{
+			p0.x = 0;
+			while (p0.x < width - 1)
+			{
+				p1.x = (p0.x + 1);
+				p1.y = (p0.y);
+				line((t_point){p0.x * ZOOM, p0.y *ZOOM}, (t_point){ p1.x * ZOOM, p1.y * ZOOM }, draw);
+				p1.x = p0.x;
+				p1.y = (p0.y + 1);
+				line((t_point){p0.x * ZOOM, p0.y *ZOOM}, (t_point){ p1.x * ZOOM, p1.y * ZOOM }, draw);
+				p0.x++;
+			}
+			p0.y++;
+		 }
+		p1.x++;
+		line((t_point){0 * ZOOM, p0.y *ZOOM}, (t_point){ p1.x * ZOOM, p1.y * ZOOM }, draw);
+		line((t_point){p0.x * ZOOM, 0 *ZOOM}, (t_point){ p1.x * ZOOM, p1.y * ZOOM }, draw);
+		mlx_loop(draw.mlx);
 	}
-	mlx_loop(mlx);
 	return (0);
 }
