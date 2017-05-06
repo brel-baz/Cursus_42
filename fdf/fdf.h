@@ -14,31 +14,62 @@
 #include <math.h>
 #include <stdio.h>
 #include "mlx.h"
-#define ZOOM 15
+#define ESC 53
+#define ZOOM_UP 69
+#define ZOOM_LESS 78
+#define TR_RIGHT 124
+#define TR_LEFT 123
+#define WIDTH 1300
+#define LENGTH 1300
+#define BLUE 0x01B0F0
 
 typedef struct      s_point
 {
     double x;
     double y;
     double z;
-    double w;
-    double length;
-    double width;
 }                   t_point;
 
 typedef struct      s_draw
 {
+    t_point **tab2;
+    t_point **tab3;
     double dx;
     double sx;
     double dy;
     double sy;
     double err;
     double e2;
-    double bpp;
-    double size_line;
-    double endian;
+    double cz;
+    double tx;
+    double ty;
+    double length;
+    double width;
+    int zoom;
+    int zo;
+    int trr;
+    int trl;
+    int i;
+    int j;
+    char *str;
+    char **tab;
+    int bpp;
+    int size_line;
+    int endian;
+    char *data;
     void *mlx;
     void *win;
-    void *image;
-    char *ptr;
+    void *img;
 }                   t_draw;
+
+int     check_line(char *str);
+int     get_length(char *file);
+int     get_width(char *file, int flag, int check, int x);
+t_point     **create_tab(double x, double y, char *file, t_draw *dw);
+void    line(t_point p0, t_point p1, t_draw *dw);
+int     key_hook(int key, t_draw *dw);
+void    perspective(t_draw *dw);
+void    zoom_up(t_draw *dw);
+void    zoom_less(t_draw *dw);
+void    tr_right(t_draw *dw);
+void    tr_left(t_draw *dw);

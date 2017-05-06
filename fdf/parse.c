@@ -10,155 +10,98 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "mlx.h"
 #include "fdf.h"
 
-int		check_line(char *str)
+void	perspective(t_draw *dw)
 {
-	int i;
-
-	i = 0;
-	while (str[i])
+	dw->tab3 = dw->tab2;
+	dw->i = 0;
+	dw->cz = 1;
+	while (dw->i < dw->length)
 	{
-		if ((str[i] < '0' || str[i] > '9') && (str[i] != ' '))
-			return (-1);
-		i++;
+		dw->j = 0;
+		while (dw->j < dw->width)
+		{
+			dw->tx = dw->tab3[dw->i][dw->j].y;
+			dw->ty = dw->tab3[dw->i][dw->j].x;
+			dw->tab3[dw->i][dw->j].x = dw->tx * 2 - dw->ty * 2;
+			dw->tab3[dw->i][dw->j].y = dw->tx + dw->ty - dw->tab3[dw->i][dw->j].z * dw->cz;
+			dw->tab3[dw->i][dw->j].x *= dw->zoom;
+			dw->tab3[dw->i][dw->j].y *= dw->zoom;
+			// dw->tab3[dw->i][dw->j].x += dw->trr;
+			// dw->tab3[dw->i][dw->j].y += dw->trl;
+			dw->j++;
+		}
+		dw->i++;
 	}
-	return (1);
 }
 
-int		get_length(char *file)
+void	get_point(t_draw *dw)
 {
-	int		y;
-	int		fd;
-	char	*line;
+	dw->zoom = 2;
+	dw->trr = 300;
+	dw->trl = 300;
+	dw->length = get_length(dw->str);
+	dw->width = get_width(dw->str, 0, 0, 0);
+	dw->tab2 = create_tab(dw->length, dw->width, dw->str, dw);
+}
 
-	y = 0;
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
+void	draw_win(t_draw *dw)
+{
+	dw->i = 0;
+	while (dw->i < dw->length - 1)
+	{
+		dw->j = 0;
+		while (dw->j < dw->width - 1)
+		{
+			line((t_point){dw->tab3[dw->i][dw->j].x, dw->tab3[dw->i][dw->j].y}, (t_point){dw->tab3[dw->i + 1][dw->j].x, dw->tab3[dw->i + 1][dw->j].y}, dw);
+			line((t_point){dw->tab3[dw->i][dw->j].x, dw->tab3[dw->i][dw->j].y}, (t_point){dw->tab3[dw->i][dw->j + 1].x, dw->tab3[dw->i][dw->j + 1].y}, dw);
+			dw->j++;
+		}
+		dw->i++;
+	}
+	line((t_point){dw->tab3[dw->i][0].x, dw->tab3[dw->i][0].y}, (t_point){dw->tab3[dw->i][dw->j].x, dw->tab3[dw->i][dw->j].y }, dw);
+	line((t_point){dw->tab3[0][dw->j].x, dw->tab3[0][dw->j].y}, (t_point){dw->tab3[dw->i][dw->j].x, dw->tab3[dw->i][dw->j].y }, dw);
+}
+
+void	set_image(t_draw *dw)
+{
+	dw->img = mlx_new_image(dw->mlx, 1300, 1300);
+	dw->data = mlx_get_data_addr(dw->img, &dw->bpp, &dw->size_line, &dw->endian);
+	mlx_clear_window(dw->mlx, dw->win);
+	draw_win(dw);
+	mlx_put_image_to_window(dw->mlx, dw->win, dw->img, 0, 0);
+	mlx_destroy_image(dw->mlx, dw->img);
+	// mlx_clear_window(dw->mlx, dw->win);
+}
+int 	key_hook(int key, t_draw *dw)
+{
+	if (key == ZOOM_UP)
+		zoom_up(dw);
+	if (key == ZOOM_LESS)
+		zoom_less(dw);
+	if (key == TR_RIGHT)
+		tr_right(dw);
+	if (key == TR_LEFT)
+		tr_left(dw);
+	if (key == ESC)
 		exit(1);
-	while (get_next_line(fd, &line))
-	{
-		if (check_line(line) == -1)
-			return (-1);
-		y++;
-		free(line);
-	}
-	close(fd);
-	return (y);
+	set_image(dw);
+	return (0);
 }
 
-int		get_width(char *file, int flag, int check, int x)
+int 	main(int ac, char **av)
 {
-	int		fd;
-	char	*line;
-	char	**tab;
-
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		exit(1);
-	while (get_next_line(fd, &line))
-	{
-		x = 0;
-		tab = ft_strsplit(line, ' ');
-		while (tab[x])
-			x++;
-		if (flag == 0)
-		{
-			check = x;
-			flag = 1;
-		}
-		free(line);
-		free(tab);
-		if (x != check)
-			return (-1);
-	}
-	close(fd);
-	return (x);
-}
-
-t_point		**create_tab(double x, double y, char *file, int i)
-{
-	t_point	**point;
-	char	**tab;
-	char	*line;
-	int		j;
-	int		fd;
-
-	fd = open(file, O_RDONLY);
-	i = 0;
-	point = (t_point**)malloc(x * sizeof(t_point*));
-	while (get_next_line(fd, &line))
-	{
-		j = 0;
-		tab = ft_strsplit(line, ' ');
-		point[i] = malloc(y * sizeof(t_point));
-		while (tab[j])
-		{
-			point[i][j].x = i;
-			point[i][j].y = j;
-			point[i][j].z = ft_atoi(tab[j]);
-			j++;
-		}
-		free(line);
-		free(tab);
-		i++;
-	}
-	close(fd);
-	return (point);
-}
-
-void	line(t_point p0, t_point p1, t_draw draw);
-//	void 	put_pixel(t_draw draw, t_point p, int color);
-int		main(int ac, char **av)
-{
-	t_point	**tab;
-	t_point p0;
-	t_draw draw;
-	int i;
-	int j;
-	double cz;
-
-	p0.length = get_length(av[1]);
-	p0.width = get_width(av[1], 0, 0, 0);
-	tab = create_tab(p0.length, p0.width, av[1], 0);
-	i = 0;
-	cz = 1;
-	draw.mlx = mlx_init();	
-	draw.win = mlx_new_window(draw.mlx, 1300, 1300, "argh");
-	while (i < p0.length)
-	{
-		j = 0;
-		while (j < p0.width)
-		{
-			p0.x = tab[i][j].y;
-			p0.y = tab[i][j].x;
-			//p0.z = tab[i][j].z;
-			tab[i][j].x = p0.x * 2 - p0.y * 2;
-			tab[i][j].y = p0.x + p0.y - tab[i][j].z * cz;
-			tab[i][j].x *= 3;
-			tab[i][j].y *= 3;
-			tab[i][j].x += 500;
-			tab[i][j].y += 500;
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	while (i < p0.length - 1)
-	{
-		j = 0;
-		while (j < p0.width - 1)
-		{
-			line((t_point){tab[i][j].x, tab[i][j].y }, (t_point){ tab[i+1][j].x, tab[i+1][j].y}, draw);
-			line((t_point){tab[i][j].x, tab[i][j].y }, (t_point){ tab[i][j+1].x, tab[i][j+1].y}, draw);
-			j++;
-		}
-		i++;
-	}
-	line((t_point){tab[i][0].x, tab[i][0].y }, (t_point){ tab[i][j].x, tab[i][j].y}, draw);
-	line((t_point){tab[0][j].x, tab[0][j].y }, (t_point){ tab[i][j].x, tab[i][j].y}, draw);
-	mlx_loop(draw.mlx);
+	t_draw *dw;
+	dw = (t_draw*)malloc(sizeof(t_draw));
+	t_point point;
+	dw->str = av[1];
+	dw->mlx = mlx_init();
+	dw->win = mlx_new_window(dw->mlx, 1300, 1300, "FDF");
+	get_point(dw);
+	perspective(dw);
+	set_image(dw);
+	mlx_hook(dw->win, 2, 3, key_hook, dw);
+	mlx_loop(dw->mlx);
 	return (0);
 }
