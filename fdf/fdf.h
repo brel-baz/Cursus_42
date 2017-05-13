@@ -10,18 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "libft.h"
 #include <math.h>
-#include <stdio.h>
 #include "mlx.h"
 #define ESC 53
 #define ZOOM_UP 69
 #define ZOOM_LESS 78
-#define TR_RIGHT 124
-#define TR_LEFT 123
+#define RIGHT 124
+#define LEFT 123
+#define UP 126
+#define DOWN 125
 #define WIDTH 1300
 #define LENGTH 1300
-#define BLUE 0x01B0F0
+#define RESET 15
+#define COLOR 8
+
 
 typedef struct      s_point
 {
@@ -43,14 +47,18 @@ typedef struct      s_draw
     double cz;
     double tx;
     double ty;
+    double tz;
     double length;
     double width;
+    int tab_color[11];
+    int color;
     int zoom;
     int zo;
     int trr;
     int trl;
     int i;
     int j;
+    int k;
     char *str;
     char **tab;
     int bpp;
@@ -73,3 +81,6 @@ void    zoom_up(t_draw *dw);
 void    zoom_less(t_draw *dw);
 void    tr_right(t_draw *dw);
 void    tr_left(t_draw *dw);
+void    color(t_draw *dw);
+void    get_point(t_draw *dw);
+void    set_image(t_draw *dw);

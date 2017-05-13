@@ -19,6 +19,7 @@ void	pixel_put(int x, int y, int color, t_draw *dw)
 {
 	int index;
 	int *ptr;
+
 	if (x >= 0 && x < WIDTH && y >= 0 && y < LENGTH)
 	{
 		index = y * dw->size_line + x * dw->bpp / 8;
@@ -37,7 +38,7 @@ void	line(t_point p0, t_point p1, t_draw *dw)
 	dw->e2 = 0.0;
 	while (1)
 	{
-		pixel_put(p0.x, p0.y, BLUE, dw);
+		pixel_put(p0.x + dw->trr, p0.y + dw->trl, dw->color, dw);
 		if (p0.x == p1.x && p0.y == p1.y)
 			break ;
 		dw->e2 = dw->err;
