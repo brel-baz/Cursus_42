@@ -6,7 +6,7 @@
 /*   By: brel-baz <brel-baz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/03 02:05:31 by brel-baz          #+#    #+#             */
-/*   Updated: 2017/04/18 00:23:00 by brel-baz         ###   ########.fr       */
+/*   Updated: 2017/05/15 04:36:34 by brel-baz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		key_hook(int key, t_draw *dw)
 {
 	if (key == ZOOM_UP)
 		dw->zoom++;
-	if (key == ZOOM_LESS)
+	if (key == ZOOM_LESS && dw->zoom > 1)
 		dw->zoom--;
 	if (key == RIGHT)
 		dw->trr += 5;
@@ -37,7 +37,7 @@ int		key_hook(int key, t_draw *dw)
 	if (key == COLOR)
 	{
 		if (dw->k == 10)
-			dw->k = 0;
+			dw->k = -1;
 		dw->k++;
 	}
 	if (key == RESET)
@@ -48,7 +48,7 @@ int		key_hook(int key, t_draw *dw)
 	return (0);
 }
 
-int 	main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_draw *dw;
 
@@ -56,9 +56,9 @@ int 	main(int ac, char **av)
 	{
 		dw = (t_draw*)malloc(sizeof(t_draw));
 		dw->str = av[1];
+		get_point(dw);
 		dw->mlx = mlx_init();
 		dw->win = mlx_new_window(dw->mlx, 1300, 1300, "FDF");
-		get_point(dw);
 		set_image(dw);
 		mlx_hook(dw->win, 2, 3, key_hook, dw);
 		mlx_loop(dw->mlx);

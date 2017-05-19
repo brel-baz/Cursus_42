@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "mlx.h"
+#include "libft/libft.h"
 #include "fdf.h"
 
 int			check_line(char *str)
@@ -22,7 +21,7 @@ int			check_line(char *str)
 	while (str[i])
 	{
 		if ((str[i] < '0' || str[i] > '9') && (str[i] != ' '))
-			return (-1);
+			exit(1);
 		i++;
 	}
 	return (1);
@@ -41,7 +40,7 @@ int			get_length(char *file)
 	while (get_next_line(fd, &line))
 	{
 		if (check_line(line) == -1)
-			return (-1);
+			exit(1);
 		y++;
 		free(line);
 	}
@@ -72,7 +71,7 @@ int			get_width(char *file, int flag, int check, int x)
 		free(line);
 		free(tab);
 		if (x != check)
-			return (-1);
+			exit(1);
 	}
 	close(fd);
 	return (x);

@@ -39,6 +39,7 @@ void	get_point(t_draw *dw)
 	dw->zoom = 5;
 	dw->trr = WIDTH / 2;
 	dw->trl = LENGTH / 2;
+	dw->e2 = 0.0;
 	dw->length = get_length(dw->str);
 	dw->width = get_width(dw->str, 0, 0, 0);
 	dw->tab2 = create_tab(dw->length, dw->width, dw->str, dw);
@@ -84,5 +85,14 @@ void	set_image(t_draw *dw)
 	dw->color = dw->tab_color[dw->k];
 	draw_win(dw);
 	mlx_put_image_to_window(dw->mlx, dw->win, dw->img, 0, 0);
+	mlx_string_put(dw->mlx, dw->win, 10, 1170, dw->color, "PRESS ESC: QUIT");
+	mlx_string_put(dw->mlx, dw->win, 10, 1190, dw->color,
+	"PRESS C: CHANGE COLOR");
+	mlx_string_put(dw->mlx, dw->win, 10, 1210, dw->color, "PRESS R: RESET");
+	mlx_string_put(dw->mlx, dw->win, 10, 1230, dw->color,
+	"PRESS +: ZOOM FRONT");
+	mlx_string_put(dw->mlx, dw->win, 10, 1250, dw->color, "PRESS -: ZOOM BACK");
+	mlx_string_put(dw->mlx, dw->win, 10, 1270, dw->color,
+	"PRESS ARROW KEYS: MOVE");
 	mlx_destroy_image(dw->mlx, dw->img);
 }
