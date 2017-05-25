@@ -18,6 +18,10 @@
 # include <fcntl.h>
 # define WIDTH 500
 # define LENGTH 500
+# define ESC 53
+# define ZOOM_UP 69
+# define ZOOM_LESS 78
+# define COLOR 8
 
 typedef		struct 	s_dw
 {
@@ -36,10 +40,11 @@ typedef		struct 	s_dw
 	int 			endian;
 	int				size_line;
 	int 			bpp;
+	int 			tab_color[11];
 	double			c_r;
 	double			c_i;
 	double			z_r;
-	double			z_i;
+	double			z_i;	
 	double			i;
 	double			tmp;
 	char			*data;
@@ -47,6 +52,26 @@ typedef		struct 	s_dw
 	void			*win;
 	void			*img;
 	int				i_max;
+	int 			k;
 }					t_dw;
 
+void	mandelbrot_init(t_dw *dw);
+void	mandelbrot_init2(t_dw *dw);
+void	mandelbrot(t_dw *dw);
+void	julia_init(t_dw *dw);
+void	julia_init2(t_dw *dw);
+void	julia(t_dw *dw);
+void	buddhabrot_init(t_dw *dw);
+void	buddhabrot_init2(t_dw *dw);
+void	buddhabrot(t_dw *dw);
+void	douady_init(t_dw *dw);
+void	douady_init2(t_dw *dw);
+void	douady(t_dw *dw);
+void	siegel_init(t_dw *dw);
+void	siegel_init2(t_dw *dw);
+void	siegel(t_dw *dw);
+void	burningship_init(t_dw *dw);
+void	burningship_init2(t_dw *dw);
+void	burningship(t_dw *dw);
+void	pixel_put(int x, int y, int color, t_dw *dw);
 #endif
