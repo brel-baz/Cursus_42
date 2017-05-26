@@ -19,7 +19,6 @@ void	julia_init(t_dw *dw)
 	dw->y1 = -1.2;
 	dw->y2 = 1.2;
 	dw->i_max = 250;
-	dw->x = 0;
 	dw->c_r = dw->x / dw->zoom + dw->x1;
     dw->c_i = dw->y / dw->zoom + dw->y1;
     dw->z_r = 0;
@@ -30,12 +29,14 @@ void	julia_init(t_dw *dw)
     dw->color = 0xFFFFFF;
 	dw->zoom_x = dw->image_x / (dw->x2 - dw->x1);
 	dw->zoom_y = dw->image_y / (dw->y2 - dw->y1);
+	dw->c_r = 0.284;
+    dw->c_i = 0.0122;
 }
 
 void	julia_init2(t_dw *dw)
 {
-	dw->c_r = 0.284;
-    dw->c_i = 0.0122;
+	// dw->c_r = 0.284;
+ //    dw->c_i = 0.0122;
     dw->z_r = dw->x / dw->zoom_x + dw->x1;
     dw->z_i =dw->y / dw->zoom_y + dw->y1;
     dw->i = 0;
@@ -43,7 +44,7 @@ void	julia_init2(t_dw *dw)
 
 void	julia(t_dw *dw)
 {
-	julia_init(dw);
+	dw->x = 0;
 	while (dw->x < dw->image_x)
 	{
 		dw->y = 0;

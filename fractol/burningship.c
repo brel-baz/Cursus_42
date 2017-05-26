@@ -14,7 +14,7 @@
 
 void	burningship_init(t_dw *dw)
 {
-	dw->x1 = -1;
+	dw->x1 = -0.5;
 	dw->x2 = 1;
 	dw->y1 = -1.2;
 	dw->y2 = 1.2;

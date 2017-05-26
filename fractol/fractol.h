@@ -16,12 +16,20 @@
 # include "mlx/mlx.h"
 # include <sys/types.h>
 # include <fcntl.h>
-# define WIDTH 500
-# define LENGTH 500
+# define WIDTH 400
+# define LENGTH 400
 # define ESC 53
 # define ZOOM_UP 69
 # define ZOOM_LESS 78
+# define RIGHT 124
+# define LEFT 123
+# define UP 126
+# define DOWN 125
+# define RESET 15
 # define COLOR 8
+# define IN 5
+# define OUT 4
+# define SPACE 49
 
 typedef		struct 	s_dw
 {
@@ -73,5 +81,6 @@ void	siegel(t_dw *dw);
 void	burningship_init(t_dw *dw);
 void	burningship_init2(t_dw *dw);
 void	burningship(t_dw *dw);
+void	color(t_dw *dw);
 void	pixel_put(int x, int y, int color, t_dw *dw);
 #endif
