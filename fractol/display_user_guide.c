@@ -1,29 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color.c                                            :+:      :+:    :+:   */
+/*   display_user_guide.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brel-baz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/24 16:39:52 by brel-baz          #+#    #+#             */
-/*   Updated: 2017/05/24 16:39:57 by brel-baz         ###   ########.fr       */
+/*   Created: 2017/05/26 07:48:10 by brel-baz          #+#    #+#             */
+/*   Updated: 2017/05/26 10:01:46 by brel-baz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	color(t_dw *dw)
+void	display_user_guide(void)
 {
-	dw->k = 0;
-	dw->tab_color[0] = 0xFFFFFF;
-	dw->tab_color[1] = 0xDB1702;
-	dw->tab_color[2] = 0xF7FF3C;
-	dw->tab_color[3] = 0x096A09;
-	dw->tab_color[4] = 0xFD6C9E;
-	dw->tab_color[5] = 0x01B0F0;
-	dw->tab_color[6] = 0xAD4F09;
-	dw->tab_color[7] = 0x606060;
-	dw->tab_color[8] = 0x791CF8;
-	dw->tab_color[9] = 0xEFD807;
-	dw->tab_color[10] = 0xAE8964;
+	ft_putstr_fd("Choose a fractal.\n", 2);
+	ft_putstr_fd("1 : Julia.\n", 2);
+	ft_putstr_fd("2 : Mandelbrot.\n", 2);
+	ft_putstr_fd("3 : Burning Ship.\n", 2);
+	ft_putstr_fd("4 : Siegel.\n", 2);
+	ft_putstr_fd("5 : Douady.\n", 2);
+	exit(-1);
 }
