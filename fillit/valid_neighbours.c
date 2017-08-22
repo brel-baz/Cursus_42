@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   valid_neighbours.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jreszka <jreszka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/06 09:31:35 by jreszka           #+#    #+#             */
-/*   Updated: 2017/01/16 16:49:36 by jreszka          ###   ########.fr       */
+/*   Created: 2017/01/07 17:39:11 by jreszka           #+#    #+#             */
+/*   Updated: 2017/01/12 19:42:29 by jreszka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/fillit.h"
 
-int		main(int argc, char **argv)
+int		valid_neighbours(char *buf, t_map map)
 {
-	char	*buf;
-	t_data	data[1];
-	t_map	map[1];
+	int min_neighbours_nb;
+	int i;
 
-	if (argc == 2)
+	min_neighbours_nb = 0;
+	i = 0;
+	while (buf[i])
 	{
-		buf = get_buf(argv[1]);
-		data[0] = parse(buf, data[0]);
-		if (num_are_valid(data[0]) && hash_neighbours_are_valid(buf, data[0]))
+		if (buf[i] == '#')
 		{
-			map[0] = ft_init_map(map[0], data[0]);
-			map[0] = ft_build_tets(ft_strsplit(buf, '\n'), map[0], data[0]);
-			ft_solve(map[0], data[0]);
+			if (buf[i - 1] == '#'
+				|| buf[i + 1] == '#'
+				|| buf[i - 5] == '#'
+				|| buf[i + 5] == '#')
+				min_neighbours_nb++;
 		}
+		i++;
 	}
-	else
-		write(1, "Usage: ./fillit input_file\n", 27);
-	return (0);
+	if (min_neighbours_nb != map.hash_nb)
+	{
+		write(1, "error\n", 6);
+		return (0);
+	}
+	return (1);
 }

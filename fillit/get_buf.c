@@ -1,35 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_buf.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jreszka <jreszka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 09:31:35 by jreszka           #+#    #+#             */
-/*   Updated: 2017/01/16 16:49:36 by jreszka          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:44:38 by jreszka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/fillit.h"
 
-int		main(int argc, char **argv)
+char	*get_buf(char *file_name)
 {
-	char	*buf;
-	t_data	data[1];
-	t_map	map[1];
+	char		*buf;
+	int			ret;
+	int			fd;
 
-	if (argc == 2)
+	buf = (char *)malloc(sizeof(char) * 1000);
+	fd = open(file_name, O_RDONLY);
+	if (fd == -1)
 	{
-		buf = get_buf(argv[1]);
-		data[0] = parse(buf, data[0]);
-		if (num_are_valid(data[0]) && hash_neighbours_are_valid(buf, data[0]))
-		{
-			map[0] = ft_init_map(map[0], data[0]);
-			map[0] = ft_build_tets(ft_strsplit(buf, '\n'), map[0], data[0]);
-			ft_solve(map[0], data[0]);
-		}
+		write(1, "error\n", 6);
+		return (0);
 	}
-	else
-		write(1, "Usage: ./fillit input_file\n", 27);
-	return (0);
+	ret = read(fd, buf, BUF_SIZE);
+	if (ret == -1)
+	{
+		write(1, "error\n", 6);
+		return (0);
+	}
+	buf[ret] = '\0';
+	if (close(fd) == -1)
+	{
+		write(1, "error\n", 6);
+		return (0);
+	}
+	return (buf);
 }

@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   num_are_valid.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jreszka <jreszka@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 09:31:35 by jreszka           #+#    #+#             */
-/*   Updated: 2017/01/16 16:49:36 by jreszka          ###   ########.fr       */
+/*   Updated: 2017/01/12 19:44:51 by jreszka          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/fillit.h"
 
-int		main(int argc, char **argv)
+int	num_are_valid(t_data data)
 {
-	char	*buf;
-	t_data	data[1];
-	t_map	map[1];
-
-	if (argc == 2)
+	data.tetri_nb = (data.char_nb + 1) / 21;
+	if (data.char_nb < MIN_CHAR_NB
+		|| data.char_nb > MAX_CHAR_NB
+		|| (data.char_nb + 1) % (20 + 1) != 0
+		|| (data.hash_nb / data.tetri_nb != NORMAL_HASH_NB)
+		|| (data.dot_nb / data.tetri_nb != NORMAL_DOT_NB)
+		|| (data.border_nl_nb / data.tetri_nb != 4)
+		|| ((data.between_nl_nb + 1) / data.tetri_nb != 1))
 	{
-		buf = get_buf(argv[1]);
-		data[0] = parse(buf, data[0]);
-		if (num_are_valid(data[0]) && hash_neighbours_are_valid(buf, data[0]))
-		{
-			map[0] = ft_init_map(map[0], data[0]);
-			map[0] = ft_build_tets(ft_strsplit(buf, '\n'), map[0], data[0]);
-			ft_solve(map[0], data[0]);
-		}
+		write(1, "error\n", 6);
+		return (0);
 	}
-	else
-		write(1, "Usage: ./fillit input_file\n", 27);
-	return (0);
+	return (1);
 }
