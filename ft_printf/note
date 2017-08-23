@@ -1,0 +1,46 @@
+
+Conversion
+{
+	s = afficher une chaine caractere OK
+	S =
+	p = pointeur afficher en hexadecimale (adresse)
+	d = afficher un int OK
+	D =
+	i = affiche un int OK
+	o = L'argument unsigned int est converti en un chiffre octal non signé
+	O =
+	u = L'argument unsigned int est converti en un chiffre décimal non signé
+	U =
+	x = L'argument unsigned int est converti en un chiffre hexadécimal non signé
+		Les lettres abcdef sont utilisées
+	X = L'argument unsigned int est converti en un chiffre hexadécimal non signé
+		Les lettres ABCDEF sont utilisées
+	c = afficher un unsigned char OK
+	C =
+}
+
+Flags
+{
+	 #
+	 0
+	 -
+	 +
+	 espace
+}
+
+Flags
+{
+	hh
+	h
+	l
+	ll
+	j
+	z
+}
+
+Fonction utile
+{
+	putnbr_base
+	itoa_base
+	putdouble
+}
