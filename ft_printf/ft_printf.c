@@ -6,7 +6,7 @@
 /*   By: brel-baz <brel-baz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/19 05:11:15 by brel-baz          #+#    #+#             */
-/*   Updated: 2017/08/23 06:03:59 by brel-baz         ###   ########.fr       */
+/*   Updated: 2017/08/24 07:52:23 by brel-baz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_putnbr_base(unsigned int nbr, int base, char *cbase)
 {
 	if (nbr == 0)
-		return;
+		return ;
 	ft_putnbr_base(nbr / base, base, cbase);
 	ft_putchar(cbase[nbr % base]);
 }
@@ -23,85 +23,65 @@ void	ft_putnbr_base(unsigned int nbr, int base, char *cbase)
 int		ft_printf(const char *format, ...)
 {
 	int i;
-	union my_id id;
 	va_list ap;
+	t_env *env;
 
 	va_start(ap, format);
 	i = 0;
+	env = (t_env*)malloc(sizeof(t_env));
+	env->len = 0;
 	while (format[i])
 	{
 		if (format[i] == '%')
 		{
-			if (format[i + 1] == '%')
-				ft_putchar('%');
-
-			if (format[i + 1] == 'c')
+			if (format[i + 1] == '#')
 			{
-				id.c = (char)va_arg(ap, int);
-				ft_putchar(id.c);
+				ft_flag_hastag(format[i + 2], ap);
+				i++;
 			}
-
-			if (format[i + 1] == 'd' || format[i + 1] == 'i')
+			else if (format[i + 1] == ' ')
 			{
-				id.d = va_arg(ap, int);
-				ft_putnbr(id.d);
+				ft_flag_space(format[i + 2], ap, env);
+				i++;
 			}
-			if (format[i + 1] == 'u')
+			else if (format[i + 1] == '+')
 			{
-				id.u = (unsigned int)va_arg(ap, int);
-				ft_putnbr(id.u);
+				ft_flag_more(format[i + 2], ap, env);
+				i++;
 			}
-			if (format[i + 1] == 's')
-			{
-				id.s = va_arg(ap, char*);
-				ft_putstr(id.s);
-			}
-			if (format[i + 1] == 'o')
-			{
-				id.o = va_arg(ap, unsigned int);
-				ft_putnbr_base(id.o, 8, BASE);
-			}
-			if (format[i + 1] == 'x')
-			{
-				id.x = va_arg(ap, unsigned int);
-				ft_putnbr_base(id.x, 16, BASE);
-			}
-			if (format[i + 1] == 'X')
-			{
-				id.X = va_arg(ap, unsigned int);
-				ft_putnbr_base(id.X, 16, BASE_UP);
-			}
-			if (format[i + 1] == 'p')
-			{
-				id.p = va_arg(ap, unsigned int);
-				ft_putstr("0x");
-				ft_putnbr_base(id.p, 16, BASE);
-			}
+			else
+				ft_convert(format[i + 1], ap, env);
 			i++;
 		}
 		else
+		{
 			ft_putchar(format[i]);
+			env->len++;
+		}
 		i++;
 	}
 	va_end(ap);
-	return (0);
+	return (env->len);
 }
 
-int 	main()
-{
-	int i;
-	int j;
-	int k;
-	char c = 'Z';
-	char str[5] = "test";
-
-	i = 420;
-	j = 90;
-	k = 78;
-	printf("printf1 = %p\n", &str);
-	ft_printf("ft_printf = %p\n", &str);
-	ft_putchar('\n');
-	printf("printf i = %d , j = %d , k = %d, %s , %% , %c\n", i,j,k, str,c);
-	ft_printf("ft_printf i = %d , j = %d , k = %d, %s , %%, %c\n", i,j,k, str,c);
-	return (0);
-}
+// int 	main()
+// {
+// 	int i;
+// 	int j;
+// 	int k;
+// 	char c = 'Z';
+// 	char str[5] = "test";
+//
+// 	i = 420;
+// 	j = 90;
+// 	k = 78;
+// 	printf("printf1 = %+10d\n", i);
+// 	ft_printf("ft_printf = %d\n", i);
+// 	ft_putchar('\n');
+// 	printf("printf i = %d , j = %d , k = %d, %s , %% , %c\n", i,j,k, str,c);
+// 	ft_printf("ft_printf i = %d , j = %d , k = %d, %s , %% , %c\n", i,j,k, str,c);
+// 	// ft_printf("111%s333%s555", "222", "444");
+// 	// ft_putchar('\n');
+// 	// printf("111%s333%s555", "222", "444");
+// 	return (0);
+// }

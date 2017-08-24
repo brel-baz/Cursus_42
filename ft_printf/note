@@ -3,17 +3,17 @@ Conversion
 {
 	s = afficher une chaine caractere OK
 	S =
-	p = pointeur afficher en hexadecimale (adresse)
+	p = pointeur afficher en hexadecimale (adresse) OK
 	d = afficher un int OK
 	D =
 	i = affiche un int OK
-	o = L'argument unsigned int est converti en un chiffre octal non signé
+	o = L'argument unsigned int est converti en un chiffre octal non signé OK
 	O =
-	u = L'argument unsigned int est converti en un chiffre décimal non signé
+	u = L'argument unsigned int est converti en un chiffre décimal non signé OK
 	U =
-	x = L'argument unsigned int est converti en un chiffre hexadécimal non signé
+	x = L'argument unsigned int est converti en un chiffre hexadécimal non signé OK
 		Les lettres abcdef sont utilisées
-	X = L'argument unsigned int est converti en un chiffre hexadécimal non signé
+	X = L'argument unsigned int est converti en un chiffre hexadécimal non signé OK
 		Les lettres ABCDEF sont utilisées
 	c = afficher un unsigned char OK
 	C =
@@ -21,11 +21,11 @@ Conversion
 
 Flags
 {
-	 #
+	 # = ajoute un prefixe 0 au convertisseur o si ce n'est pas deja un 0 et 0x a x et 0X a X OK
 	 0
 	 -
-	 +
-	 espace
+	 + = ajoute un prefixe + sur une conversion signee OK
+	 espace = affiche un espace devant un nombre positif pour les conversion i ou d OK
 }
 
 Flags
@@ -42,5 +42,5 @@ Fonction utile
 {
 	putnbr_base
 	itoa_base
-	putdouble
+	putdouble(atof)
 }

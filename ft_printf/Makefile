@@ -6,7 +6,7 @@
 #    By: brel-baz <brel-baz@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 10:29:59 by brel-baz          #+#    #+#              #
-#    Updated: 2017/08/22 04:47:21 by brel-baz         ###   ########.fr        #
+#    Updated: 2017/08/24 06:56:42 by brel-baz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = clang
 HEADER = ./ft_printf.h
 FLAG = -Wall -Wextra -Werror -O3
 OPTION = -c -I $(HEADER)
-SRC = ./ft_printf.c
+SRC = ./ft_printf.c ./ft_convert.c ./ft_flag.c
 
 OBJ = $(addsuffix .o,$(basename $(SRC)))
 
