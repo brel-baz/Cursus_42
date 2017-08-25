@@ -42,5 +42,6 @@ Fonction utile
 {
 	putnbr_base
 	itoa_base
+	utoa
 	putdouble(atof)
 }
